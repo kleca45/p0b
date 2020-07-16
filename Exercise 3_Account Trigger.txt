@@ -1,0 +1,56 @@
+public class AccountTriggerHandler {
+
+    public static List<Account> ForInsertDuplicates(List<Account> newAccounts) {
+        
+        Set<String> newPhoneSet = new Set<String>();
+        Set<String> newNameSet = new Set<String>();
+        
+        for(Account a : newAccounts){
+            if(a.Phone != null){
+                newPhoneSet.add(a.Phone);
+            }else if(a.Phone == null){
+                newPhoneSet.add('1112223333');
+            }
+            
+            newNameSet.add(a.Name);
+            
+        
+        }
+        
+        Map<String, Account> existingAccountMap = new Map<String, Account>();
+        
+        for(Account existingAccount : [SELECT id, Name, Phone FROM Account WHERE Name in :newNameSet AND Phone in :newPhoneSet]){
+            
+            existingAccountMap.put(existingAccount.Name, existingAccount);
+        }
+        
+        for(Account newAccount : newAccounts){
+            Account duplicateAccount = existingAccountMap.get(newAccount.Name);
+            
+            
+            if(duplicateAccount != null && newAccount.Phone == duplicateAccount.Phone){
+                newAccount.addError('Combination of account name and account phone already exists in system. '+duplicateAccount.Name+ ' '+duplicateAccount.Phone);
+            }
+            
+        }
+        
+        
+       return newAccounts; 
+    }
+    
+}
+
+
+---------------------------
+
+
+trigger AccountTrigger on Account (before insert) {
+
+    if(trigger.isBefore){
+        if(trigger.isInsert){
+            AccountTriggerHandler.ForInsertDuplicates(trigger.new);
+        }
+    }
+    
+    
+}
