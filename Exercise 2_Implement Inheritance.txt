@@ -1,0 +1,117 @@
+public abstract class Vehicle {
+
+   
+    public integer fuelLevel = 10;
+   
+	public String noise;
+       
+  
+      
+    public void useFuel(){
+        fuelLevel--;
+    }
+    
+    public virtual String MakeNoise(){
+        
+        noise    = 'REEEE';
+		return noise;        
+    } 
+    
+    public abstract void Crash();
+    
+    
+}
+
+
+
+
+----------------------
+public virtual class Car  extends Vehicle {
+
+    public static integer instancesOf{get;set;}
+    
+    static {
+        instancesOf=0;
+    }
+ 
+    public override void Crash(){
+        System.debug('*Driver-side and Passenger-side airbags deployed*');
+    }
+
+  
+    
+}
+
+
+
+
+
+--------------------------
+
+public class Truck extends Car implements TeslaInterface {
+	
+    @testVisible
+    public String truckColor;
+    @testVisible
+    public integer truckModelYear;
+    @testVisible
+    private String fuelType{get;set;}
+    
+     
+    public Truck(){
+        
+        Car.instancesOf++;
+        System.debug(instancesOf);
+    }
+
+    public Truck(integer modelYear ){
+        this();
+        truckModelYear = modelYear;
+    }
+    
+    public Truck(String color, integer modelYear){
+        this(modelYear);
+        truckColor = color;
+        truckModelYear = modelYear;        
+    }
+    
+    public Virtual override String MakeNoise(){
+        noise = 'trucknoises';
+        return noise;
+    }
+
+    public void AutoDrive(){
+      
+        try{
+      useFuel();
+      System.debug(fuelLevel); 
+        }catch(CustomException e){
+            
+        System.debug('no fuel');
+        
+        }
+        }
+    
+    
+}
+
+
+
+---------------------
+
+public Interface TeslaInterface {
+
+    void AutoDrive();
+    
+}
+
+--------------------
+
+
+public class CustomException extends Exception {
+    
+
+   
+    
+    
+}
