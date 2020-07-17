@@ -1,0 +1,32 @@
+@isTest
+public class TruckTest {
+    
+    @isTest
+    public static void TestTruckConstructor(){
+        
+        Truck truckTest1 = new Truck('Red', 2012);
+        System.assertEquals('Red',truckTest1.truckColor);
+        System.assertEquals(2012,truckTest1.truckModelYear);        
+        
+    }
+    
+    @isTest
+    public static void TestMakeNoise(){
+        Truck truckTest2 = new Truck();
+        truckTest2.MakeNoise();
+        String noiseTest = truckTest2.MakeNoise();
+        System.assertEquals('trucknoises',noiseTest);	
+    }
+    
+    @isTest
+    public static void TestautoDrive(){
+        Truck truckTest3 = new Truck();
+        Integer fuellevelCheckPOST = truckTest3.fuelLevel;
+        System.assertEquals(10,fuellevelCheckPOST);
+        truckTest3.AutoDrive();
+        Integer fuellevelCheckPRE = truckTest3.fuelLevel;
+        System.assertEquals(9,fuellevelCheckPRE);
+    }
+
+    
+}
